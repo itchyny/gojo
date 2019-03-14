@@ -62,7 +62,7 @@ Options:
 	}
 	opts := []gojo.Option{
 		gojo.Args(args),
-		gojo.OutStream(os.Stdout),
+		gojo.Output(os.Stdout),
 	}
 	if array {
 		opts = append(opts, gojo.Array())

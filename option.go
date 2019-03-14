@@ -26,9 +26,9 @@ func Pretty() Option {
 	}
 }
 
-// OutStream ...
-func OutStream(outStream io.Writer) Option {
+// Output ...
+func Output(output io.Writer) Option {
 	return func(g *Gojo) {
-		g.outStream = outStream
+		g.output = output
 	}
 }

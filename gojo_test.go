@@ -107,7 +107,7 @@ func TestGojoRun(t *testing.T) {
 			out := new(bytes.Buffer)
 			opts := []Option{
 				Args(tc.args),
-				OutStream(out),
+				Output(out),
 			}
 			if tc.array {
 				opts = append(opts, Array())

@@ -9,10 +9,10 @@ import (
 
 // Gojo ...
 type Gojo struct {
-	args      []string
-	array     bool
-	pretty    bool
-	outStream io.Writer
+	args   []string
+	array  bool
+	pretty bool
+	output io.Writer
 }
 
 // New Gojo
@@ -50,7 +50,7 @@ func (g *Gojo) runObj() error {
 			ms.Set(k, v)
 		}
 	}
-	enc := json.NewEncoder(g.outStream)
+	enc := json.NewEncoder(g.output)
 	if g.pretty {
 		enc.SetIndent("", indent)
 	}
@@ -62,7 +62,7 @@ func (g *Gojo) runArr() error {
 	for _, arg := range g.args {
 		as = append(as, parseValue(arg))
 	}
-	enc := json.NewEncoder(g.outStream)
+	enc := json.NewEncoder(g.output)
 	if g.pretty {
 		enc.SetIndent("", indent)
 	}
