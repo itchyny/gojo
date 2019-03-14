@@ -12,6 +12,13 @@ func Args(args []string) Option {
 	}
 }
 
+// Array ...
+func Array() Option {
+	return func(g *Gojo) {
+		g.array = true
+	}
+}
+
 // Pretty ...
 func Pretty() Option {
 	return func(g *Gojo) {

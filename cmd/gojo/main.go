@@ -18,6 +18,8 @@ func main() {
 
 func run() error {
 	fs := flag.NewFlagSet(name, flag.ContinueOnError)
+	var array bool
+	fs.BoolVar(&array, "a", false, "creates an array")
 	var pretty bool
 	fs.BoolVar(&pretty, "p", false, "pretty print")
 	if err := fs.Parse(os.Args[1:]); err != nil {
@@ -26,6 +28,9 @@ func run() error {
 	opts := []gojo.Option{
 		gojo.Args(fs.Args()),
 		gojo.OutStream(os.Stdout),
+	}
+	if array {
+		opts = append(opts, gojo.Array())
 	}
 	if pretty {
 		opts = append(opts, gojo.Pretty())

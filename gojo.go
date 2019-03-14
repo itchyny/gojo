@@ -8,6 +8,7 @@ import (
 // Gojo ...
 type Gojo struct {
 	args      []string
+	array     bool
 	pretty    bool
 	outStream io.Writer
 }
@@ -28,6 +29,13 @@ func (g *Gojo) Apply(opt Option) {
 
 // Run ...
 func (g *Gojo) Run() error {
+	if g.array {
+		return g.runArr()
+	}
+	return g.runObj()
+}
+
+func (g *Gojo) runObj() error {
 	ms := make(map[string]string, len(g.args))
 	for _, arg := range g.args {
 		m, err := parse(arg)
@@ -43,4 +51,16 @@ func (g *Gojo) Run() error {
 		enc.SetIndent("", "  ")
 	}
 	return enc.Encode(ms)
+}
+
+func (g *Gojo) runArr() error {
+	as := make([]string, 0, len(g.args))
+	for _, arg := range g.args {
+		as = append(as, arg)
+	}
+	enc := json.NewEncoder(g.outStream)
+	if g.pretty {
+		enc.SetIndent("", "  ")
+	}
+	return enc.Encode(as)
 }

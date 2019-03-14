@@ -11,6 +11,7 @@ func TestGojoRun(t *testing.T) {
 	testCases := []struct {
 		name     string
 		args     []string
+		array    bool
 		pretty   bool
 		expected string
 	}{
@@ -37,6 +38,25 @@ func TestGojoRun(t *testing.T) {
 }
 `,
 		},
+		{
+			name:  "array",
+			args:  []string{"foo", "bar", "baz"},
+			array: true,
+			expected: `["foo","bar","baz"]
+`,
+		},
+		{
+			name:   "array pretty",
+			args:   []string{"foo", "bar", "baz"},
+			array:  true,
+			pretty: true,
+			expected: `[
+  "foo",
+  "bar",
+  "baz"
+]
+`,
+		},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
@@ -44,6 +64,9 @@ func TestGojoRun(t *testing.T) {
 			opts := []Option{
 				Args(tc.args),
 				OutStream(out),
+			}
+			if tc.array {
+				opts = append(opts, Array())
 			}
 			if tc.pretty {
 				opts = append(opts, Pretty())
