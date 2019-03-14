@@ -6,6 +6,9 @@ env: PATH=/home/travis/gopath/bin:$PATH
 script:
   - make test
   - make lint
+
+before_deploy:
+  - make cross
 deploy:
   provider: releases
   skip_cleanup: true
