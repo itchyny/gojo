@@ -27,12 +27,12 @@ Yet another Go implementation of [jo](https://github.com/jpmens/jo).
 ## Installation
 ### Homebrew
 ```sh
- $ brew install itchyny/gojo/gojo
+brew install itchyny/gojo/gojo
 ```
 
 ### Build from source
 ```bash
- $ go get -u github.com/itchyny/gojo/cmd/gojo
+go get -u github.com/itchyny/gojo/cmd/gojo
 ```
 
 ## Difference to jo
