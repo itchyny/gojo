@@ -5,28 +5,28 @@ import "io"
 // Option for Gojo
 type Option func(*Gojo)
 
-// Args ...
+// Args option
 func Args(args []string) Option {
 	return func(g *Gojo) {
 		g.args = args
 	}
 }
 
-// Array ...
+// Array option
 func Array() Option {
 	return func(g *Gojo) {
 		g.array = true
 	}
 }
 
-// Pretty ...
+// Pretty option
 func Pretty() Option {
 	return func(g *Gojo) {
 		g.pretty = true
 	}
 }
 
-// Output ...
+// Output option
 func Output(output io.Writer) Option {
 	return func(g *Gojo) {
 		g.output = output

@@ -7,7 +7,7 @@ import (
 	"github.com/iancoleman/orderedmap"
 )
 
-// Gojo ...
+// Gojo represents the gojo printer
 type Gojo struct {
 	args   []string
 	array  bool
@@ -29,7 +29,7 @@ func (g *Gojo) Apply(opt Option) {
 	opt(g)
 }
 
-// Run ...
+// Run gojo
 func (g *Gojo) Run() error {
 	if g.array {
 		return g.runArr()
