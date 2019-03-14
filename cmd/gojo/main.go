@@ -38,7 +38,7 @@ Options:
 		fs.PrintDefaults()
 	}
 	var showVersion bool
-	fs.BoolVar(&showVersion, "version", false, "print the version")
+	fs.BoolVar(&showVersion, "v", false, "print version")
 	var array bool
 	fs.BoolVar(&array, "a", false, "creates an array")
 	var pretty bool
