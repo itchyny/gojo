@@ -15,16 +15,9 @@ func parse(s string) (map[string]interface{}, error) {
 }
 
 func parseValue(s string) interface{} {
-	switch s {
-	case "false":
-		return false
-	case "true":
-		return true
-	default:
-		var v interface{}
-		if err := json.Unmarshal([]byte(s), &v); err == nil {
-			return v
-		}
-		return s
+	var v interface{}
+	if err := json.Unmarshal([]byte(s), &v); err == nil {
+		return v
 	}
+	return s
 }
