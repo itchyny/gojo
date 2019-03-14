@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"os"
@@ -25,8 +26,18 @@ func run() error {
 	if err := fs.Parse(os.Args[1:]); err != nil {
 		return err
 	}
+	args := fs.Args()
+	if len(args) == 0 {
+		s := bufio.NewScanner(os.Stdin)
+		for s.Scan() {
+			args = append(args, s.Text())
+		}
+		if err := s.Err(); err != nil {
+			return err
+		}
+	}
 	opts := []gojo.Option{
-		gojo.Args(fs.Args()),
+		gojo.Args(args),
 		gojo.OutStream(os.Stdout),
 	}
 	if array {
