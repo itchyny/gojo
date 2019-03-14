@@ -2,7 +2,6 @@ package gojo
 
 import (
 	"encoding/json"
-	"math/big"
 	"strconv"
 	"strings"
 
@@ -22,10 +21,6 @@ func parseValue(s string) interface{} {
 	m := orderedmap.New()
 	if err := json.Unmarshal([]byte(s), m); err == nil {
 		return m
-	}
-	bi := new(big.Int)
-	if err := json.Unmarshal([]byte(s), bi); err == nil {
-		return bi
 	}
 	var v interface{}
 	if err := json.Unmarshal([]byte(s), &v); err == nil {
