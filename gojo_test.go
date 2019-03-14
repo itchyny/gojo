@@ -24,7 +24,7 @@ func TestGojoRun(t *testing.T) {
 		{
 			name: "multiple",
 			args: []string{"foo=bar", "bar=false", "baz=qux"},
-			expected: `{"bar":false,"baz":"qux","foo":"bar"}
+			expected: `{"foo":"bar","bar":false,"baz":"qux"}
 `,
 		},
 		{
@@ -32,21 +32,22 @@ func TestGojoRun(t *testing.T) {
 			args:   []string{"foo=bar", "bar=true", "baz=qux"},
 			pretty: true,
 			expected: `{
+  "foo": "bar",
   "bar": true,
-  "baz": "qux",
-  "foo": "bar"
+  "baz": "qux"
 }
 `,
 		},
 		{
 			name:   "numbers",
-			args:   []string{"a=123", "b=3.14", "c=3e10", "d=-128"},
+			args:   []string{"a=123", "c=3.14", "d=3e10", "b=-128", "e=[]"},
 			pretty: true,
 			expected: `{
   "a": 123,
-  "b": 3.14,
-  "c": 30000000000,
-  "d": -128
+  "c": 3.14,
+  "d": 30000000000,
+  "b": -128,
+  "e": []
 }
 `,
 		},
@@ -58,11 +59,12 @@ func TestGojoRun(t *testing.T) {
 		},
 		{
 			name:   "nested object pretty",
-			args:   []string{`foo={"bar":{"baz":"qux","quux":["foo"]}}`},
+			args:   []string{`foo={"bar":{"foo":1,"baz":"qux","quux":["foo"]}}`},
 			pretty: true,
 			expected: `{
   "foo": {
     "bar": {
+      "foo": 1,
       "baz": "qux",
       "quux": [
         "foo"

@@ -3,6 +3,8 @@ package gojo
 import (
 	"encoding/json"
 	"io"
+
+	"github.com/iancoleman/orderedmap"
 )
 
 // Gojo ...
@@ -38,14 +40,14 @@ func (g *Gojo) Run() error {
 const indent = "  "
 
 func (g *Gojo) runObj() error {
-	ms := make(map[string]interface{}, len(g.args))
+	ms := orderedmap.New()
 	for _, arg := range g.args {
 		m, err := parseKeyValue(arg)
 		if err != nil {
 			return err
 		}
 		for k, v := range m {
-			ms[k] = v
+			ms.Set(k, v)
 		}
 	}
 	enc := json.NewEncoder(g.outStream)

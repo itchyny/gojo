@@ -3,6 +3,8 @@ package gojo
 import (
 	"encoding/json"
 	"strings"
+
+	"github.com/iancoleman/orderedmap"
 )
 
 func parseKeyValue(s string) (map[string]interface{}, error) {
@@ -15,6 +17,10 @@ func parseKeyValue(s string) (map[string]interface{}, error) {
 }
 
 func parseValue(s string) interface{} {
+	m := orderedmap.New()
+	if err := json.Unmarshal([]byte(s), m); err == nil {
+		return m
+	}
 	var v interface{}
 	if err := json.Unmarshal([]byte(s), &v); err == nil {
 		return v
