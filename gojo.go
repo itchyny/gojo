@@ -31,6 +31,9 @@ func (g *Gojo) Apply(opt Option) {
 
 // Run gojo
 func (g *Gojo) Run() error {
+	if g.output == nil {
+		return errOutputNotSet
+	}
 	if g.array {
 		return g.runArr()
 	}
