@@ -1,6 +1,9 @@
 package gojo
 
-import "strings"
+import (
+	"encoding/json"
+	"strings"
+)
 
 func parse(s string) (map[string]interface{}, error) {
 	i := strings.IndexRune(s, '=')
@@ -18,6 +21,10 @@ func parseValue(s string) interface{} {
 	case "true":
 		return true
 	default:
+		var v interface{}
+		if err := json.Unmarshal([]byte(s), &v); err == nil {
+			return v
+		}
 		return s
 	}
 }

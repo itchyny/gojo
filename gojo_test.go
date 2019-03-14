@@ -39,6 +39,40 @@ func TestGojoRun(t *testing.T) {
 `,
 		},
 		{
+			name:   "numbers",
+			args:   []string{"a=123", "b=3.14", "c=3e10", "d=-128"},
+			pretty: true,
+			expected: `{
+  "a": 123,
+  "b": 3.14,
+  "c": 30000000000,
+  "d": -128
+}
+`,
+		},
+		{
+			name: "nested object",
+			args: []string{`foo={"bar":{"baz":"qux","quux":["foo"]}}`},
+			expected: `{"foo":{"bar":{"baz":"qux","quux":["foo"]}}}
+`,
+		},
+		{
+			name:   "nested object pretty",
+			args:   []string{`foo={"bar":{"baz":"qux","quux":["foo"]}}`},
+			pretty: true,
+			expected: `{
+  "foo": {
+    "bar": {
+      "baz": "qux",
+      "quux": [
+        "foo"
+      ]
+    }
+  }
+}
+`,
+		},
+		{
 			name:  "array",
 			args:  []string{"foo", "false", "baz"},
 			array: true,
