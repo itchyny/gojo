@@ -35,6 +35,8 @@ func (g *Gojo) Run() error {
 	return g.runObj()
 }
 
+const indent = "  "
+
 func (g *Gojo) runObj() error {
 	ms := make(map[string]interface{}, len(g.args))
 	for _, arg := range g.args {
@@ -48,7 +50,7 @@ func (g *Gojo) runObj() error {
 	}
 	enc := json.NewEncoder(g.outStream)
 	if g.pretty {
-		enc.SetIndent("", "  ")
+		enc.SetIndent("", indent)
 	}
 	return enc.Encode(ms)
 }
@@ -60,7 +62,7 @@ func (g *Gojo) runArr() error {
 	}
 	enc := json.NewEncoder(g.outStream)
 	if g.pretty {
-		enc.SetIndent("", "  ")
+		enc.SetIndent("", indent)
 	}
 	return enc.Encode(as)
 }
