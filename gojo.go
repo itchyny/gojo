@@ -8,6 +8,7 @@ import (
 // Gojo ...
 type Gojo struct {
 	args      []string
+	pretty    bool
 	outStream io.Writer
 }
 
@@ -37,5 +38,9 @@ func (g *Gojo) Run() error {
 			ms[k] = v
 		}
 	}
-	return json.NewEncoder(g.outStream).Encode(ms)
+	enc := json.NewEncoder(g.outStream)
+	if g.pretty {
+		enc.SetIndent("", "  ")
+	}
+	return enc.Encode(ms)
 }

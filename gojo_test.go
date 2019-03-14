@@ -26,15 +26,29 @@ func TestGojoRun(t *testing.T) {
 			expected: `{"bar":"baz","baz":"qux","foo":"bar"}
 `,
 		},
+		{
+			name:   "pretty",
+			args:   []string{"foo=bar", "bar=baz", "baz=qux"},
+			pretty: true,
+			expected: `{
+  "bar": "baz",
+  "baz": "qux",
+  "foo": "bar"
+}
+`,
+		},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			out := new(bytes.Buffer)
-			g := New(
+			opts := []Option{
 				Args(tc.args),
 				OutStream(out),
-			)
-			assert.NoError(t, g.Run())
+			}
+			if tc.pretty {
+				opts = append(opts, Pretty())
+			}
+			assert.NoError(t, New(opts...).Run())
 			assert.Equal(t, tc.expected, out.String())
 		})
 	}

@@ -12,6 +12,13 @@ func Args(args []string) Option {
 	}
 }
 
+// Pretty ...
+func Pretty() Option {
+	return func(g *Gojo) {
+		g.pretty = true
+	}
+}
+
 // OutStream ...
 func OutStream(outStream io.Writer) Option {
 	return func(g *Gojo) {
