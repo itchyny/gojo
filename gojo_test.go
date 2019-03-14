@@ -40,14 +40,21 @@ func TestGojoRun(t *testing.T) {
 		},
 		{
 			name:   "numbers",
-			args:   []string{"a=123", "c=3.14", "d=3e10", "b=-128", "e=[]"},
+			args:   []string{"a=123", "c=3.14", "d=3e10", "b=-128", "e=[1,2,3]", "f=0xffdc", "g=0XFF", "h=037"},
 			pretty: true,
 			expected: `{
   "a": 123,
   "c": 3.14,
   "d": 30000000000,
   "b": -128,
-  "e": []
+  "e": [
+    1,
+    2,
+    3
+  ],
+  "f": 65500,
+  "g": 255,
+  "h": 37
 }
 `,
 		},

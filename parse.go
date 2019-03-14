@@ -2,6 +2,7 @@ package gojo
 
 import (
 	"encoding/json"
+	"strconv"
 	"strings"
 
 	"github.com/iancoleman/orderedmap"
@@ -24,6 +25,14 @@ func parseValue(s string) interface{} {
 	var v interface{}
 	if err := json.Unmarshal([]byte(s), &v); err == nil {
 		return v
+	}
+	if i, err := strconv.ParseInt(s, 10, 64); err == nil {
+		return i
+	}
+	if strings.HasPrefix(s, "0x") || strings.HasPrefix(s, "0X") {
+		if i, err := strconv.ParseInt(s[2:], 16, 64); err == nil {
+			return i
+		}
 	}
 	return s
 }
