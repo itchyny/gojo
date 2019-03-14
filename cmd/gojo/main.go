@@ -5,26 +5,50 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"runtime"
 
 	"github.com/itchyny/gojo"
 )
 
 const name = "gojo"
 
+const version = "0.0.0"
+
+var revision = "HEAD"
+
 func main() {
-	if err := run(); err != nil {
-		fmt.Fprintf(os.Stderr, "%s: %s\n", name, err)
+	if err := run(); err != nil && err != flag.ErrHelp {
+		os.Exit(1)
 	}
 }
 
 func run() error {
 	fs := flag.NewFlagSet(name, flag.ContinueOnError)
+	fs.Usage = func() {
+		fs.SetOutput(os.Stdout)
+		fmt.Printf(`gojo - Yet another Go implementation of jo
+
+Version: %s (rev: %s/%s)
+
+Synopsis:
+    %% gojo key=value ...
+
+Options:
+`, version, revision, runtime.Version())
+		fs.PrintDefaults()
+	}
+	var showVersion bool
+	fs.BoolVar(&showVersion, "version", false, "print the version")
 	var array bool
 	fs.BoolVar(&array, "a", false, "creates an array")
 	var pretty bool
 	fs.BoolVar(&pretty, "p", false, "pretty print")
 	if err := fs.Parse(os.Args[1:]); err != nil {
 		return err
+	}
+	if showVersion {
+		fmt.Printf("%s %s (rev: %s/%s)\n", name, version, revision, runtime.Version())
+		return nil
 	}
 	args := fs.Args()
 	if len(args) == 0 {
@@ -46,5 +70,9 @@ func run() error {
 	if pretty {
 		opts = append(opts, gojo.Pretty())
 	}
-	return gojo.New(opts...).Run()
+	if err := gojo.New(opts...).Run(); err != nil {
+		fmt.Fprintf(os.Stderr, "%s: %s\n", name, err)
+		return err
+	}
+	return nil
 }
