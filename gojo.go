@@ -2,17 +2,18 @@ package gojo
 
 import (
 	"encoding/json"
-	"os"
+	"io"
 )
 
 // Gojo ...
 type Gojo struct {
-	args []string
+	args      []string
+	outStream io.Writer
 }
 
 // New Gojo
-func New(args []string) *Gojo {
-	return &Gojo{args: args}
+func New(args []string, outStream io.Writer) *Gojo {
+	return &Gojo{args, outStream}
 }
 
 // Run ...
@@ -27,5 +28,5 @@ func (g *Gojo) Run() error {
 			ms[k] = v
 		}
 	}
-	return json.NewEncoder(os.Stdout).Encode(ms)
+	return json.NewEncoder(g.outStream).Encode(ms)
 }
