@@ -2,11 +2,22 @@ package gojo
 
 import "strings"
 
-func parse(s string) (map[string]string, error) {
+func parse(s string) (map[string]interface{}, error) {
 	i := strings.IndexRune(s, '=')
 	if i < 0 {
 		return nil, errParse(s)
 	}
-	key, value := s[:i], s[i+1:]
-	return map[string]string{key: value}, nil
+	key, value := s[:i], parseValue(s[i+1:])
+	return map[string]interface{}{key: value}, nil
+}
+
+func parseValue(s string) interface{} {
+	switch s {
+	case "false":
+		return false
+	case "true":
+		return true
+	default:
+		return s
+	}
 }

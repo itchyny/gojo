@@ -36,7 +36,7 @@ func (g *Gojo) Run() error {
 }
 
 func (g *Gojo) runObj() error {
-	ms := make(map[string]string, len(g.args))
+	ms := make(map[string]interface{}, len(g.args))
 	for _, arg := range g.args {
 		m, err := parse(arg)
 		if err != nil {
@@ -54,9 +54,9 @@ func (g *Gojo) runObj() error {
 }
 
 func (g *Gojo) runArr() error {
-	as := make([]string, 0, len(g.args))
+	as := make([]interface{}, 0, len(g.args))
 	for _, arg := range g.args {
-		as = append(as, arg)
+		as = append(as, parseValue(arg))
 	}
 	enc := json.NewEncoder(g.outStream)
 	if g.pretty {
