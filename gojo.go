@@ -12,8 +12,17 @@ type Gojo struct {
 }
 
 // New Gojo
-func New(args []string, outStream io.Writer) *Gojo {
-	return &Gojo{args, outStream}
+func New(opts ...Option) *Gojo {
+	g := &Gojo{}
+	for _, opt := range opts {
+		g.Apply(opt)
+	}
+	return g
+}
+
+// Apply an Option
+func (g *Gojo) Apply(opt Option) {
+	opt(g)
 }
 
 // Run ...

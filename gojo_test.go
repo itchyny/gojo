@@ -30,7 +30,11 @@ func TestGojoRun(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			out := new(bytes.Buffer)
-			assert.NoError(t, New(tc.args, out).Run())
+			g := New(
+				Args(tc.args),
+				OutStream(out),
+			)
+			assert.NoError(t, g.Run())
 			assert.Equal(t, tc.expected, out.String())
 		})
 	}
