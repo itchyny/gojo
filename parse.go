@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func parse(s string) (map[string]interface{}, error) {
+func parseKeyValue(s string) (map[string]interface{}, error) {
 	i := strings.IndexRune(s, '=')
 	if i < 0 {
 		return nil, errParse(s)

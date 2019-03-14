@@ -40,7 +40,7 @@ const indent = "  "
 func (g *Gojo) runObj() error {
 	ms := make(map[string]interface{}, len(g.args))
 	for _, arg := range g.args {
-		m, err := parse(arg)
+		m, err := parseKeyValue(arg)
 		if err != nil {
 			return err
 		}
