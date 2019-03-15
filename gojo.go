@@ -19,14 +19,9 @@ type Gojo struct {
 func New(opts ...Option) *Gojo {
 	g := &Gojo{}
 	for _, opt := range opts {
-		g.Apply(opt)
+		opt(g)
 	}
 	return g
-}
-
-// Apply an Option
-func (g *Gojo) Apply(opt Option) {
-	opt(g)
 }
 
 // Run gojo
