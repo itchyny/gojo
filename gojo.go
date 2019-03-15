@@ -3,6 +3,7 @@ package gojo
 import (
 	"encoding/json"
 	"io"
+	"os"
 
 	"github.com/iancoleman/orderedmap"
 )
@@ -17,7 +18,7 @@ type Gojo struct {
 
 // New Gojo
 func New(opts ...Option) *Gojo {
-	g := &Gojo{}
+	g := &Gojo{output: os.Stdout}
 	for _, opt := range opts {
 		opt(g)
 	}
@@ -26,9 +27,6 @@ func New(opts ...Option) *Gojo {
 
 // Run gojo
 func (g *Gojo) Run() error {
-	if g.output == nil {
-		return errOutputNotSet
-	}
 	if g.array {
 		return g.runArr()
 	}
