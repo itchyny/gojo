@@ -3,7 +3,7 @@ package cli
 import "os"
 
 // Run gojo
-func Run() error {
+func Run() int {
 	return (&cli{
 		inStream:  os.Stdin,
 		outStream: os.Stdout,

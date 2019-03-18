@@ -16,13 +16,18 @@ const version = "0.0.3"
 
 var revision = "HEAD"
 
+const (
+	exitCodeOK = iota
+	exitCodeErr
+)
+
 type cli struct {
 	inStream  io.Reader
 	outStream io.Writer
 	errStream io.Writer
 }
 
-func (cli *cli) run(args []string) error {
+func (cli *cli) run(args []string) int {
 	fs := flag.NewFlagSet(name, flag.ContinueOnError)
 	fs.SetOutput(cli.errStream)
 	fs.Usage = func() {
@@ -46,13 +51,13 @@ Options:
 	fs.BoolVar(&pretty, "p", false, "pretty print")
 	if err := fs.Parse(args); err != nil {
 		if err == flag.ErrHelp {
-			return nil
+			return exitCodeOK
 		}
-		return err
+		return exitCodeErr
 	}
 	if showVersion {
 		fmt.Fprintf(cli.outStream, "%s %s (rev: %s/%s)\n", name, version, revision, runtime.Version())
-		return nil
+		return exitCodeOK
 	}
 	args = fs.Args()
 	if len(args) == 0 {
@@ -61,7 +66,7 @@ Options:
 			args = append(args, s.Text())
 		}
 		if err := s.Err(); err != nil {
-			return err
+			return exitCodeErr
 		}
 	}
 	opts := []gojo.Option{
@@ -76,7 +81,7 @@ Options:
 	}
 	if err := gojo.New(opts...).Run(); err != nil {
 		fmt.Fprintf(cli.errStream, "%s: %s\n", name, err)
-		return err
+		return exitCodeErr
 	}
-	return nil
+	return exitCodeOK
 }

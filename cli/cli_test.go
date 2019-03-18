@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestCliRun(t *testing.T) {
@@ -122,13 +121,13 @@ bar
 				outStream: outStream,
 				errStream: errStream,
 			}
-			err := cli.run(tc.args)
+			code := cli.run(tc.args)
 			if tc.err == "" {
-				require.NoError(t, err)
+				assert.Equal(t, exitCodeOK, code)
 				assert.Equal(t, tc.expected, outStream.String())
 			} else {
-				require.Error(t, err)
-				assert.Equal(t, tc.err, err.Error())
+				assert.Equal(t, exitCodeErr, code)
+				assert.Contains(t, errStream.String(), tc.err)
 			}
 		})
 	}
