@@ -66,7 +66,7 @@ func TestGojoRun(t *testing.T) {
 		},
 		{
 			name:   "nested object pretty",
-			args:   []string{`foo={"bar":{"foo":1,"baz":"qux","quux":["foo"]}}`},
+			args:   []string{`foo={"bar":{"foo":1,"baz":"qux","quux":["foo", []]}}`},
 			pretty: true,
 			expected: `{
   "foo": {
@@ -74,7 +74,8 @@ func TestGojoRun(t *testing.T) {
       "foo": 1,
       "baz": "qux",
       "quux": [
-        "foo"
+        "foo",
+        []
       ]
     }
   }
