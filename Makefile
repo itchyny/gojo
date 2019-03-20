@@ -20,7 +20,7 @@ deps:
 
 .PHONY: cross
 cross: crossdeps
-	goxz -os=linux,darwin,freebsd,netbsd,windows -arch=386,amd64 -n $(BIN) ./cmd/$(BIN)
+	goxz -build-ldflags=$(BUILD_LDFLAGS) ./cmd/$(BIN)
 
 .PHONY: crossdeps
 crossdeps: deps
