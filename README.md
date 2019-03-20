@@ -27,7 +27,7 @@ Yet another Go implementation of [jo](https://github.com/jpmens/jo).
 ## Installation
 ### Homebrew
 ```sh
-brew install itchyny/gojo/gojo
+brew install itchyny/tap/gojo
 ```
 
 ### Build from source
