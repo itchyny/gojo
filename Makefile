@@ -4,7 +4,7 @@ BUILD_LDFLAGS := "-X github.com/itchyny/gojo/cli.revision=$(CURRENT_REVISION)"
 export GO111MODULE=on
 
 .PHONY: all
-all: clean build test
+all: clean build
 
 .PHONY: build
 build: deps
