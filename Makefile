@@ -1,6 +1,6 @@
 BIN := gojo
 CURRENT_REVISION := $(shell git rev-parse --short HEAD)
-BUILD_LDFLAGS := "-X github.com/itchyny/gojo/cli.revision=$(CURRENT_REVISION)"
+BUILD_LDFLAGS := "-X github.com/itchyny/$(BIN)/cli.revision=$(CURRENT_REVISION)"
 export GO111MODULE=on
 
 .PHONY: all
