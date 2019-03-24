@@ -6,5 +6,6 @@ _gojo()
     '(-v)-v[print version]' \
     '(-a)-a[creates an array]' \
     '(-p)-p[pretty print]' \
+    '(-h)-h[print help]' \
     && ret=0
 }
