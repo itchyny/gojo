@@ -1,0 +1,10 @@
+#compdef gojo
+
+_gojo()
+{
+  _arguments -C \
+    '(-v)-v[print version]' \
+    '(-a)-a[creates an array]' \
+    '(-p)-p[pretty print]' \
+    && ret=0
+}
