@@ -46,6 +46,12 @@ func (s *objectSetter) set(v interface{}) error {
 	}
 	if st, ok := s.value.(setter); ok {
 		val, ok := getKey(v, s.key)
+		switch v := val.(type) {
+		case orderedmap.OrderedMap:
+			val = &v
+		case []interface{}:
+			val = &v
+		}
 		if !ok {
 			if _, ok := st.(*arraySetter); ok {
 				val = &[]interface{}{}
@@ -77,6 +83,8 @@ func isMap(t interface{}) bool {
 func getKey(t interface{}, key string) (interface{}, bool) {
 	switch t := t.(type) {
 	case *orderedmap.OrderedMap:
+		return t.Get(key)
+	case orderedmap.OrderedMap:
 		return t.Get(key)
 	case map[string]interface{}:
 		v, ok := t[key]

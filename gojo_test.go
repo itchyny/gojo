@@ -113,6 +113,12 @@ func TestGojoRun(t *testing.T) {
 			expected: `{"a[b][c]d":"e","a":{"b":{"c":{"d":"f"}}},"b":{"c":{"d":[["f"],"g"]}},"c":[[["d"]]]}
 `,
 		},
+		{
+			name: "merge to json",
+			args: []string{`a={"b":{"c":10,"d":[20]}}`, `a[b][d][]=30`, `a[b][e]=40`},
+			expected: `{"a":{"b":{"c":10,"d":[20,30],"e":40}}}
+`,
+		},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
