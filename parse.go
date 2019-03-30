@@ -18,6 +18,9 @@ func parseKeyValue(s string) (setter, error) {
 }
 
 func parseValue(s string) interface{} {
+	if s == "null" {
+		return nil
+	}
 	m := orderedmap.New()
 	if err := json.Unmarshal([]byte(s), m); err == nil {
 		return m

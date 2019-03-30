@@ -30,12 +30,13 @@ func TestGojoRun(t *testing.T) {
 		},
 		{
 			name:   "pretty",
-			args:   []string{"foo=bar", "bar=true", "baz=qux"},
+			args:   []string{"foo=bar", "bar=true", "baz=qux", "qux=null"},
 			pretty: true,
 			expected: `{
   "foo": "bar",
   "bar": true,
-  "baz": "qux"
+  "baz": "qux",
+  "qux": null
 }
 `,
 		},
@@ -85,9 +86,9 @@ func TestGojoRun(t *testing.T) {
 		},
 		{
 			name:  "array",
-			args:  []string{"foo", "false", "baz"},
+			args:  []string{"foo", "false", "baz", "null"},
 			array: true,
-			expected: `["foo",false,"baz"]
+			expected: `["foo",false,"baz",null]
 `,
 		},
 		{
