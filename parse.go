@@ -14,14 +14,7 @@ func parseKeyValue(s string) (setter, error) {
 		return nil, errParse(s)
 	}
 	key, value := s[:i], parseValue(s[i+1:])
-	i, j := strings.IndexRune(key, '['), strings.IndexRune(key, ']')
-	if i < 0 || j < 0 || j < i || j < len(key)-1 {
-		return &keyValueSetter{key, value}, nil
-	}
-	if i+1 == j && j == len(key)-1 {
-		return &arraySetter{key[:i], value}, nil
-	}
-	return &objectSetter{key[:i], key[i+1 : j], value}, nil
+	return buildSetter(key, value, false), nil
 }
 
 func parseValue(s string) interface{} {
@@ -42,4 +35,38 @@ func parseValue(s string) interface{} {
 		}
 	}
 	return s
+}
+
+func buildSetter(key string, value interface{}, inner bool) setter {
+	i, j := strings.IndexRune(key, '['), strings.IndexRune(key, ']')
+	if i < 0 || j < 0 || j < i {
+		if inner {
+			return nil
+		}
+		return &objectSetter{key, value}
+	}
+	if i > 0 {
+		s := buildSetter(key[i:], value, true)
+		if s == nil {
+			if inner {
+				return nil
+			}
+			return &objectSetter{key, value}
+		}
+		return &objectSetter{key[:i], s}
+	}
+	if j < len(key)-1 {
+		s := buildSetter(key[j+1:], value, true)
+		if s == nil {
+			if inner {
+				return nil
+			}
+			return &objectSetter{key, value}
+		}
+		value = s
+	}
+	if i+1 == j {
+		return &arraySetter{value}
+	}
+	return &objectSetter{key[i+1 : j], value}
 }
