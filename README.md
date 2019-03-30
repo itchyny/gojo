@@ -22,6 +22,32 @@ Yet another Go implementation of [jo](https://github.com/jpmens/jo).
     }
   }
 }
+ $ gojo -p foo[bar][baz][qux][quux]=128
+{
+  "foo": {
+    "bar": {
+      "baz": {
+        "qux": {
+          "quux": 128
+        }
+      }
+    }
+  }
+}
+ $ gojo -p res[foo][][id]=10 res[foo][][id]=20 res[cnt]=2
+{
+  "res": {
+    "foo": [
+      {
+        "id": 10
+      },
+      {
+        "id": 20
+      }
+    ],
+    "cnt": 2
+  }
+}
 ```
 
 ## Installation
