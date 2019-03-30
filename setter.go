@@ -84,8 +84,6 @@ func getKey(t interface{}, key string) (interface{}, bool) {
 	switch t := t.(type) {
 	case *orderedmap.OrderedMap:
 		return t.Get(key)
-	case orderedmap.OrderedMap:
-		return t.Get(key)
 	case map[string]interface{}:
 		v, ok := t[key]
 		return v, ok
