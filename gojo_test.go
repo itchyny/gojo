@@ -101,6 +101,12 @@ func TestGojoRun(t *testing.T) {
 ]
 `,
 		},
+		{
+			name: "deep keys",
+			args: []string{`foo[]=1`, `foo[]=bar`, `bar[baz]=10`, `qux][=20`, `a[b]c=d`},
+			expected: `{"foo":[1,"bar"],"bar":{"baz":10},"qux][":20,"a[b]c":"d"}
+`,
+		},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {

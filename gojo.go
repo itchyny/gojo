@@ -38,12 +38,12 @@ const indent = "  "
 func (g *Gojo) runObj() error {
 	ms := orderedmap.New()
 	for _, arg := range g.args {
-		m, err := parseKeyValue(arg)
+		s, err := parseKeyValue(arg)
 		if err != nil {
 			return err
 		}
-		for k, v := range m {
-			ms.Set(k, v)
+		if err := s.set(ms); err != nil {
+			return err
 		}
 	}
 	enc := json.NewEncoder(g.output)

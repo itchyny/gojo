@@ -8,13 +8,20 @@ import (
 	"github.com/iancoleman/orderedmap"
 )
 
-func parseKeyValue(s string) (map[string]interface{}, error) {
+func parseKeyValue(s string) (setter, error) {
 	i := strings.IndexRune(s, '=')
 	if i < 0 {
 		return nil, errParse(s)
 	}
 	key, value := s[:i], parseValue(s[i+1:])
-	return map[string]interface{}{key: value}, nil
+	i, j := strings.IndexRune(key, '['), strings.IndexRune(key, ']')
+	if i < 0 || j < 0 || j < i || j < len(key)-1 {
+		return &keyValueSetter{key, value}, nil
+	}
+	if i+1 == j && j == len(key)-1 {
+		return &arraySetter{key[:i], value}, nil
+	}
+	return &objectSetter{key[:i], key[i+1 : j], value}, nil
 }
 
 func parseValue(s string) interface{} {
