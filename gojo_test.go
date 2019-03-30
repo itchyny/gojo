@@ -14,6 +14,7 @@ func TestGojoRun(t *testing.T) {
 		array    bool
 		pretty   bool
 		expected string
+		err      string
 	}{
 		{
 			name: "default",
@@ -119,6 +120,32 @@ func TestGojoRun(t *testing.T) {
 			expected: `{"a":{"b":{"c":10,"d":[20,30],"e":40}}}
 `,
 		},
+		{
+			name: "parse error",
+			args: []string{`foo`},
+			err: `failed to parse: "foo"
+`,
+		},
+		{
+			name: "expected object",
+			args: []string{`foo[]=1`, `foo[bar]=2`},
+			err:  `expected an object: foo: [1]`,
+		},
+		{
+			name: "expected object deep",
+			args: []string{`foo[bar][]=1`, `foo[bar][baz]=2`},
+			err:  `expected an object: foo.bar: [1]`,
+		},
+		{
+			name: "expected array",
+			args: []string{`foo[bar]=1`, `foo[]=2`},
+			err:  `expected an array: foo: {"bar":1}`,
+		},
+		{
+			name: "expected array deep",
+			args: []string{`foo[bar][baz][qux]=1`, `foo[bar][baz][]=2`},
+			err:  `expected an array: foo.bar.baz: {"qux":1}`,
+		},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
@@ -133,8 +160,15 @@ func TestGojoRun(t *testing.T) {
 			if tc.pretty {
 				opts = append(opts, Pretty())
 			}
-			assert.NoError(t, New(opts...).Run())
-			assert.Equal(t, tc.expected, out.String())
+			err := New(opts...).Run()
+			if tc.err == "" {
+				assert.NoError(t, err)
+				assert.Equal(t, tc.expected, out.String())
+			} else {
+				assert.Error(t, err)
+				assert.Contains(t, tc.err, err.Error())
+				assert.Equal(t, tc.expected, out.String())
+			}
 		})
 	}
 }

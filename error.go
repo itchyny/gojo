@@ -1,6 +1,10 @@
 package gojo
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+	"strings"
+)
 
 type errParse string
 
@@ -9,19 +13,21 @@ func (err errParse) Error() string {
 }
 
 type errArray struct {
-	key   string
+	keys  []string
 	value interface{}
 }
 
 func (err errArray) Error() string {
-	return fmt.Sprintf("expected an array: %q (%T)", err.key, err.value)
+	bs, _ := json.Marshal(err.value)
+	return fmt.Sprintf("expected an array: %s: %s", strings.Join(err.keys, "."), string(bs))
 }
 
 type errObject struct {
-	key   string
+	keys  []string
 	value interface{}
 }
 
 func (err errObject) Error() string {
-	return fmt.Sprintf("expected an object: %q (%T)", err.key, err.value)
+	bs, _ := json.Marshal(err.value)
+	return fmt.Sprintf("expected an object: %s: %s", strings.Join(err.keys, "."), string(bs))
 }

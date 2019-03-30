@@ -42,7 +42,7 @@ func (g *Gojo) runObj() error {
 		if err != nil {
 			return err
 		}
-		if err := s.set(ms); err != nil {
+		if err := s.set(nil, ms); err != nil {
 			return err
 		}
 	}

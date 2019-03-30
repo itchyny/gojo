@@ -3,28 +3,28 @@ package gojo
 import "github.com/iancoleman/orderedmap"
 
 type setter interface {
-	set(interface{}) error
+	set([]string, interface{}) error
 }
 
 type arraySetter struct {
 	value interface{}
 }
 
-func (s *arraySetter) set(v interface{}) error {
+func (s *arraySetter) set(keys []string, v interface{}) error {
 	arr, ok := v.(*[]interface{})
 	if !ok {
-		return errArray{"", v}
+		return errArray{keys, v}
 	}
 	if st, ok := s.value.(setter); ok {
 		if ast, ok := st.(*arraySetter); ok {
 			ar := []interface{}{}
-			if err := ast.set(&ar); err != nil {
+			if err := ast.set(keys, &ar); err != nil {
 				return err
 			}
 			*arr = append(*arr, ar)
 		} else {
 			om := orderedmap.New()
-			if err := st.set(om); err != nil {
+			if err := st.set(keys, om); err != nil {
 				return err
 			}
 			*arr = append(*arr, om)
@@ -40,9 +40,9 @@ type objectSetter struct {
 	value interface{}
 }
 
-func (s *objectSetter) set(v interface{}) error {
+func (s *objectSetter) set(keys []string, v interface{}) error {
 	if !isMap(v) {
-		return errObject{"", v}
+		return errObject{keys, v}
 	}
 	if st, ok := s.value.(setter); ok {
 		val, ok := getKey(v, s.key)
@@ -59,7 +59,7 @@ func (s *objectSetter) set(v interface{}) error {
 				val = orderedmap.New()
 			}
 		}
-		if err := st.set(val); err != nil {
+		if err := st.set(append(keys, s.key), val); err != nil {
 			return err
 		}
 		setKey(v, s.key, val)
