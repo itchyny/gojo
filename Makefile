@@ -1,5 +1,5 @@
 BIN := gojo
-VERSION := $$(make show-version)
+VERSION := $$(make -s show-version)
 VERSION_PATH := cli
 CURRENT_REVISION := $(shell git rev-parse --short HEAD)
 BUILD_LDFLAGS := "-X github.com/itchyny/$(BIN)/cli.revision=$(CURRENT_REVISION)"
