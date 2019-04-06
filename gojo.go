@@ -56,7 +56,11 @@ func (g *Gojo) runObj() error {
 func (g *Gojo) runArr() error {
 	as := make([]interface{}, 0, len(g.args))
 	for _, arg := range g.args {
-		as = append(as, parseValue(arg))
+		value, err := parseValue(arg)
+		if err != nil {
+			return err
+		}
+		as = append(as, value)
 	}
 	enc := json.NewEncoder(g.output)
 	if g.pretty {

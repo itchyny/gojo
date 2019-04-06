@@ -147,6 +147,18 @@ func TestGojoRun(t *testing.T) {
 			args: []string{`foo[bar][baz][qux]=1`, `foo[bar][baz][]=2`},
 			err:  `expected an array: foo.bar.baz: {"qux":1}`,
 		},
+		{
+			name: "read from file",
+			args: []string{`foo=@.gitignore`},
+			expected: `{"foo":"/build\n/goxz"}
+`,
+		},
+		{
+			name: "base64 of file",
+			args: []string{`foo=%.gitignore`},
+			expected: `{"foo":"L2J1aWxkCi9nb3h6Cg=="}
+`,
+		},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {

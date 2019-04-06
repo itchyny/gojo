@@ -1,7 +1,9 @@
 package gojo
 
 import (
+	"encoding/base64"
 	"encoding/json"
+	"io/ioutil"
 	"strconv"
 	"strings"
 
@@ -13,31 +15,54 @@ func parseKeyValue(s string) (setter, error) {
 	if i < 0 {
 		return nil, errParse(s)
 	}
-	key, value := s[:i], parseValue(s[i+1:])
+	key := s[:i]
+	value, err := parseValue(s[i+1:])
+	if err != nil {
+		return nil, err
+	}
 	return buildSetter(key, value, false), nil
 }
 
-func parseValue(s string) interface{} {
+func parseValue(s string) (interface{}, error) {
 	if s == "null" {
-		return nil
+		return nil, nil
 	}
 	m := orderedmap.New()
 	if err := json.Unmarshal([]byte(s), m); err == nil {
-		return m
+		return m, nil
 	}
 	var v interface{}
 	if err := json.Unmarshal([]byte(s), &v); err == nil {
-		return v
+		return v, nil
 	}
 	if i, err := strconv.ParseInt(s, 10, 64); err == nil {
-		return i
+		return i, nil
 	}
 	if strings.HasPrefix(s, "0x") || strings.HasPrefix(s, "0X") {
 		if i, err := strconv.ParseInt(s[2:], 16, 64); err == nil {
-			return i
+			return i, nil
 		}
 	}
-	return s
+	if strings.HasPrefix(s, "@") {
+		cnt, err := ioutil.ReadFile(s[1:])
+		if err != nil {
+			return nil, err
+		}
+		for _, c := range []byte{'\n', '\r'} {
+			if l := len(cnt); l > 0 && cnt[l-1] == c {
+				cnt = cnt[:l-1]
+			}
+		}
+		return string(cnt), nil
+	}
+	if strings.HasPrefix(s, "%") {
+		cnt, err := ioutil.ReadFile(s[1:])
+		if err != nil {
+			return nil, err
+		}
+		return base64.StdEncoding.EncodeToString(cnt), nil
+	}
+	return s, nil
 }
 
 func buildSetter(key string, value interface{}, inner bool) setter {
