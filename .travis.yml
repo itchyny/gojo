@@ -5,17 +5,3 @@ env: PATH=/home/travis/gopath/bin:$PATH
 script:
   - make test
   - make lint
-
-before_deploy:
-  - make cross
-deploy:
-  provider: releases
-  skip_cleanup: true
-  api_key:
-    secure: U6GBf6jN9PJA/Vl3FSV0FDbgRJha2G0t4sd6n42JOtSzdbrFOr5kBXP5rQVhMmC+xHv6EuRIraNXf1lVVDJjvURpw3LjPHO0xjXGmuMnuH8wMftU4AHY1rriFkXjboLqBr6Iy5AN2hN9d44wLfQPxCGkPw1zbCizspu5lGT6sMDu4eSIfv01s7Al+9iPGd+g6qeCtK9vL7AetfpUnHXHNLbsaHV0+VnhQv351nW4p77VjfOGxtFWEdmzs+D/vOPN2LRdv9cXHV6514504z6aWDF01tsuyOf8Iv5OksQM4fK0XEWC8wD5xO2zzF5X9KK3ONrIT+oRbrmyxO+Xb/qmG6xb9jsvCGY7BD0mQ7g2MeYSqLwFLMFYlWv0L0vcQ+f1ZsXGfBmLMB2X43Wok6CxMbn8w1H98k6dsk9eSBQZXEIBUVyDRY9EwbaY/nd/tmhVmHq0t+gM+BEGzzjjrhma7j+WA/ojiRrriTlc4m3kKFQC2/ZwK+kI2eQB2zHTwOiY+VmW7CSdGn/9tfqDMNpBeAnyhzOAU5riGQ3wXDIQJnP5EeO4xpC/R22W45IFzjmc5/nBsTf+g2kw7DSzWYSP5+8F6WD87DRYUUYcSrwG1jQRSNHCh6B/GOnHXceGvAZyw/c196B120HW4bhD5Z9Y3Zlg6gTfrFZ8suZKNRkSza8=
-  file: goxz/*
-  file_glob: true
-  on:
-    repo: itchyny/gojo
-    tags: true
-    all_branches: false
