@@ -48,6 +48,10 @@ Yet another Go implementation of [jo](https://github.com/jpmens/jo).
     "cnt": 2
   }
 }
+ $ gojo foo=@Makefile  # read contents from file
+{"foo":"BIN := gojo\nCURRENT_REVISION := $(shell git rev-parse --short HEAD)\nBUILD_LDFLAGS := \"-X ..."}
+ $ gojo foo=%Makefile  # base64 of file contents
+{"foo":"QklOIDo9IGdvam8KQ1VSUkVOVF9SRVZJU0lPTiA6PSAkKHNoZWxsIGdpdCByZXYtcGFyc2UgLS1zaG9ydCBIRUFEKQp ..."}
 ```
 
 ## Installation
