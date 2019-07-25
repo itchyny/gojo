@@ -73,7 +73,7 @@ func buildSetter(key string, value interface{}, inner bool) setter {
 		}
 		return &objectSetter{key, value}
 	}
-	if i > 0 {
+	if i > 0 || !inner {
 		s := buildSetter(key[i:], value, true)
 		if s == nil {
 			if inner {

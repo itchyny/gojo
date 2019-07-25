@@ -111,8 +111,8 @@ func TestGojoRun(t *testing.T) {
 		},
 		{
 			name: "deep keys",
-			args: []string{`a[b][c]d=e`, `a[b][c][d]=f`, `b[c][d][][]=f`, `b[c][d][]=g`, `c[][][]=d`},
-			expected: `{"a[b][c]d":"e","a":{"b":{"c":{"d":"f"}}},"b":{"c":{"d":[["f"],"g"]}},"c":[[["d"]]]}
+			args: []string{`a[b][c]d=e`, `a[b][c][d]=f`, `b[c][d][][]=f`, `b[c][d][]=g`, `c[][][]=d`, `[][][]=h`, `[][1][2]=i`},
+			expected: `{"a[b][c]d":"e","a":{"b":{"c":{"d":"f"}}},"b":{"c":{"d":[["f"],"g"]}},"c":[[["d"]]],"":[[["h"]],{"1":{"2":"i"}}]}
 `,
 		},
 		{
