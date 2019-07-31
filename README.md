@@ -69,7 +69,6 @@ go get -u github.com/itchyny/gojo/cmd/gojo
 - Implemented in Go and Go-gettable
 - Drops support of `k@v` syntax (use `k=true` or `k=false`)
 - Does not print duplicate keys (although duplicate key in JSON is valid but it's not that useful and overwritten by the latter)
-- Reading file contents is not implemented yet
 
 ## Bug Tracker
 Report bug at [Issues・itchyny/gojo - GitHub](https://github.com/itchyny/gojo/issues).
