@@ -1,4 +1,4 @@
-# gojo [![Travis Build Status](https://travis-ci.org/itchyny/gojo.svg?branch=master)](https://travis-ci.org/itchyny/gojo)
+# gojo [![CI Status](https://github.com/itchyny/gojo/workflows/CI/badge.svg)](https://github.com/itchyny/gojo/actions)
 Yet another Go implementation of [jo](https://github.com/jpmens/jo).
 
 ## Usage
