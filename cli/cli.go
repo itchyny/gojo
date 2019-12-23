@@ -37,7 +37,7 @@ func (cli *cli) run(args []string) int {
 Version: %s (rev: %s/%s)
 
 Synopsis:
-    %% %[1]s key=value ...
+  %% %[1]s key=value ...
 
 Options:
 `, name, version, revision, runtime.Version())
