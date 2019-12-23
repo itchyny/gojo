@@ -2,7 +2,7 @@ BIN := gojo
 VERSION := $$(make -s show-version)
 VERSION_PATH := cli
 CURRENT_REVISION := $(shell git rev-parse --short HEAD)
-BUILD_LDFLAGS := "-X github.com/itchyny/$(BIN)/cli.revision=$(CURRENT_REVISION)"
+BUILD_LDFLAGS := "-s -w -X github.com/itchyny/$(BIN)/cli.revision=$(CURRENT_REVISION)"
 GOBIN ?= $(shell go env GOPATH)/bin
 export GO111MODULE=on
 
