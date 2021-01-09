@@ -74,6 +74,7 @@ go get -u github.com/itchyny/gojo/cmd/gojo
 
 ## Difference to jo
 - Implemented in Go and Go-gettable
+- Implements nested paths (example: `foo[x][y][z]=1`, `foo[][][]=1`)
 - Drops support of `k@v` syntax (use `k=true` or `k=false`)
 - Does not print duplicate keys (although duplicate key in JSON is valid but it's not that useful and overwritten by the latter)
 
