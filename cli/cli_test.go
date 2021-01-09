@@ -107,7 +107,7 @@ bar
 			err:  `failed to parse: "foo"`,
 		},
 		{
-			name: "unkown flag",
+			name: "unknown flag",
 			args: []string{"-b"},
 			err:  `flag provided but not defined: -b`,
 		},
