@@ -150,13 +150,13 @@ func TestGojoRun(t *testing.T) {
 		{
 			name: "read from file",
 			args: []string{`foo=@.gitignore`},
-			expected: `{"foo":"/goxz\n/gojo"}
+			expected: `{"foo":"/gojo\n/goxz\n/CREDITS\n*.exe\n*.test\n*.out"}
 `,
 		},
 		{
 			name: "base64 of file",
 			args: []string{`foo=%.gitignore`},
-			expected: `{"foo":"L2dveHoKL2dvam8K"}
+			expected: `{"foo":"L2dvam8KL2dveHoKL0NSRURJVFMKKi5leGUKKi50ZXN0Cioub3V0Cg=="}
 `,
 		},
 	}
