@@ -11,7 +11,7 @@ import (
 )
 
 func parseKeyValue(s string) (setter, error) {
-	i := strings.IndexRune(s, '=')
+	i := strings.IndexByte(s, '=')
 	if i < 0 {
 		return nil, errParse(s)
 	}
@@ -66,7 +66,7 @@ func parseValue(s string) (interface{}, error) {
 }
 
 func buildSetter(key string, value interface{}, inner bool) setter {
-	i, j := strings.IndexRune(key, '['), strings.IndexRune(key, ']')
+	i, j := strings.IndexByte(key, '['), strings.IndexByte(key, ']')
 	if i < 0 || j < 0 || j < i {
 		if inner {
 			return nil
