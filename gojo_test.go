@@ -1,7 +1,7 @@
 package gojo
 
 import (
-	"bytes"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -162,10 +162,10 @@ func TestGojoRun(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			out := new(bytes.Buffer)
+			var out strings.Builder
 			opts := []Option{
 				Args(tc.args),
-				Output(out),
+				Output(&out),
 			}
 			if tc.array {
 				opts = append(opts, Array())
