@@ -21,8 +21,8 @@ func TestCliRun(t *testing.T) {
 		},
 		{
 			name: "multiple",
-			args: []string{"foo=bar", "bar=baz", "qux=quux"},
-			expected: `{"foo":"bar","bar":"baz","qux":"quux"}
+			args: []string{"foo=bar", "bar=false", "baz=qux", "\n=quux", `\n=foo`},
+			expected: `{"foo":"bar","bar":false,"baz":"qux","\n":"quux","\\n":"foo"}
 `,
 		},
 		{
