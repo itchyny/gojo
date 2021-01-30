@@ -3,8 +3,6 @@ package gojo
 import (
 	"strings"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func TestGojoRun(t *testing.T) {
@@ -124,8 +122,7 @@ func TestGojoRun(t *testing.T) {
 		{
 			name: "parse error",
 			args: []string{`foo`},
-			err: `failed to parse: "foo"
-`,
+			err:  `failed to parse: "foo"`,
 		},
 		{
 			name: "expected object",
@@ -175,12 +172,19 @@ func TestGojoRun(t *testing.T) {
 			}
 			err := New(opts...).Run()
 			if tc.err == "" {
-				assert.NoError(t, err)
-				assert.Equal(t, tc.expected, out.String())
+				if err != nil {
+					t.Errorf("error should be nil but got: %s", err)
+				} else if got := out.String(); got != tc.expected {
+					t.Errorf("output should be %q but got %q", tc.expected, got)
+				}
 			} else {
-				assert.Error(t, err)
-				assert.Contains(t, tc.err, err.Error())
-				assert.Equal(t, tc.expected, out.String())
+				if err == nil {
+					t.Errorf("error should be nil but got: %s", err)
+				} else if got := out.String(); got != tc.expected {
+					t.Errorf("output should be %q but got %q", tc.expected, got)
+				} else if got := err.Error(); got != tc.err {
+					t.Errorf("error should be %q but got %q", tc.err, got)
+				}
 			}
 		})
 	}

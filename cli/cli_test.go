@@ -3,8 +3,6 @@ package cli
 import (
 	"strings"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func TestCliRun(t *testing.T) {
@@ -121,11 +119,19 @@ bar
 			}
 			code := cli.run(tc.args)
 			if tc.err == "" {
-				assert.Equal(t, exitCodeOK, code)
-				assert.Equal(t, tc.expected, outStream.String())
+				if code != exitCodeOK {
+					t.Errorf("code should be %d but got %d", exitCodeOK, code)
+				}
+				if got := outStream.String(); got != tc.expected {
+					t.Errorf("output should be %q but got %q", tc.expected, got)
+				}
 			} else {
-				assert.Equal(t, exitCodeErr, code)
-				assert.Contains(t, errStream.String(), tc.err)
+				if code != exitCodeErr {
+					t.Errorf("code should be %d but got %d", exitCodeErr, code)
+				}
+				if got := errStream.String(); !strings.Contains(got, tc.expected) {
+					t.Errorf("error output should contain %q but got %q", tc.err, got)
+				}
 			}
 		})
 	}
