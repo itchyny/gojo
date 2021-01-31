@@ -5,7 +5,7 @@
 [![release](https://img.shields.io/github/release/itchyny/gojo/all.svg)](https://github.com/itchyny/gojo/releases)
 [![pkg.go.dev](https://pkg.go.dev/badge/github.com/itchyny/gojo)](https://pkg.go.dev/github.com/itchyny/gojo)
 
-### Yet another Go implementation of [jo](https://github.com/jpmens/jo).
+### Yet another Go implementation of [jo](https://github.com/jpmens/jo)
 This is an implementation of [jo command](https://github.com/jpmens/jo) written in Go language.
 
 ## Usage
