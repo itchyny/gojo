@@ -22,8 +22,8 @@ func TestGojoRun(t *testing.T) {
 		},
 		{
 			name: "multiple",
-			args: []string{"foo=bar", "bar=false", "baz=qux", "\n=quux", `\n=foo`},
-			expected: `{"foo":"bar","bar":false,"baz":"qux","\n":"quux","\\n":"foo"}
+			args: []string{"foo=bar", "bar=false", "baz=qux", "\n=", `\n=null`},
+			expected: `{"foo":"bar","bar":false,"baz":"qux","\n":"","\\n":null}
 `,
 		},
 		{

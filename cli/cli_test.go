@@ -21,17 +21,18 @@ func TestCliRun(t *testing.T) {
 		},
 		{
 			name: "multiple",
-			args: []string{"foo=bar", "bar=false", "baz=qux", "\n=quux", `\n=foo`},
-			expected: `{"foo":"bar","bar":false,"baz":"qux","\n":"quux","\\n":"foo"}
+			args: []string{"foo=bar", "bar=false", "baz=qux", "\n=", `\n=null`},
+			expected: `{"foo":"bar","bar":false,"baz":"qux","\n":"","\\n":null}
 `,
 		},
 		{
 			name: "pretty",
-			args: []string{"-p", "foo=bar", "bar=baz", "qux=quux"},
+			args: []string{"-p", "foo=bar", "bar=true", "baz=qux", "qux=null"},
 			expected: `{
   "foo": "bar",
-  "bar": "baz",
-  "qux": "quux"
+  "bar": true,
+  "baz": "qux",
+  "qux": null
 }
 `,
 		},
