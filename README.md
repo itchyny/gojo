@@ -55,9 +55,11 @@ This is an implementation of [jo command](https://github.com/jpmens/jo) written 
     "cnt": 2
   }
 }
- $ gojo foo=@testdata/file.txt  # read contents from file
+ $ gojo foo=@testdata/file.txt    # read contents from file
 {"foo":"a\nb\nc\nd\ne"}
- $ gojo foo=%testdata/file.txt  # base64 of file contents
+ $ gojo foo=:testdata/file1.json  # json value of file
+{"foo":{"x":1,"z":2,"y":3}}
+ $ gojo foo=%testdata/file.txt    # base64 of file contents
 {"foo":"YQpiCmMKZAplCg=="}
 ```
 

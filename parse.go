@@ -24,26 +24,11 @@ func parseKeyValue(s string) (setter, error) {
 }
 
 func parseValue(s string) (interface{}, error) {
-	if s == "null" {
-		return nil, nil
+	if s == "" {
+		return "", nil
 	}
-	m := orderedmap.New()
-	if err := json.Unmarshal([]byte(s), m); err == nil {
-		return m, nil
-	}
-	var v interface{}
-	if err := json.Unmarshal([]byte(s), &v); err == nil {
-		return v, nil
-	}
-	if i, err := strconv.ParseInt(s, 10, 64); err == nil {
-		return i, nil
-	}
-	if strings.HasPrefix(s, "0x") || strings.HasPrefix(s, "0X") {
-		if i, err := strconv.ParseInt(s[2:], 16, 64); err == nil {
-			return i, nil
-		}
-	}
-	if strings.HasPrefix(s, "@") {
+	switch s[0] {
+	case '@':
 		cnt, err := ioutil.ReadFile(s[1:])
 		if err != nil {
 			return nil, err
@@ -54,15 +39,55 @@ func parseValue(s string) (interface{}, error) {
 			}
 		}
 		return string(cnt), nil
-	}
-	if strings.HasPrefix(s, "%") {
+	case ':':
+		cnt, err := ioutil.ReadFile(s[1:])
+		if err != nil {
+			return nil, err
+		}
+		return decodeJSON(cnt)
+	case '%':
 		cnt, err := ioutil.ReadFile(s[1:])
 		if err != nil {
 			return nil, err
 		}
 		return base64.StdEncoding.EncodeToString(cnt), nil
+	default:
+		if v, err := decodeJSON([]byte(s)); err == nil {
+			return v, nil
+		}
+		if i, err := strconv.ParseInt(s, 10, 64); err == nil {
+			return i, nil
+		}
+		if strings.HasPrefix(s, "0x") || strings.HasPrefix(s, "0X") {
+			if i, err := strconv.ParseInt(s[2:], 16, 64); err == nil {
+				return i, nil
+			}
+		}
+		return s, nil
 	}
-	return s, nil
+}
+
+func decodeJSON(bs []byte) (interface{}, error) {
+	var m orderedmap.OrderedMap
+	if err := json.Unmarshal(bs, &m); err == nil {
+		return m, nil
+	}
+	var vs []orderedmap.OrderedMap
+	if err := json.Unmarshal(bs, &vs); err == nil {
+		if vs == nil {
+			return nil, nil
+		}
+		ws := make([]interface{}, len(vs))
+		for i, v := range vs {
+			ws[i] = v
+		}
+		return ws, nil
+	}
+	var v interface{}
+	if err := json.Unmarshal(bs, &v); err != nil {
+		return nil, err
+	}
+	return v, nil
 }
 
 func buildSetter(key string, value interface{}, inner bool) setter {

@@ -60,8 +60,8 @@ func TestGojoRun(t *testing.T) {
 		},
 		{
 			name: "nested object",
-			args: []string{`foo={"bar":{"baz":"qux","quux":["foo"]}}`},
-			expected: `{"foo":{"bar":{"baz":"qux","quux":["foo"]}}}
+			args: []string{`foo={"bar":{"baz":"qux","quux":[{"y":1,"x":2}]}}`, `bar=[{"y":1,"x":2},{"x":3,"y":4}]`},
+			expected: `{"foo":{"bar":{"baz":"qux","quux":[{"y":1,"x":2}]}},"bar":[{"y":1,"x":2},{"x":3,"y":4}]}
 `,
 		},
 		{
@@ -114,9 +114,15 @@ func TestGojoRun(t *testing.T) {
 `,
 		},
 		{
-			name: "merge to json",
+			name: "merge to json object",
 			args: []string{`a={"b":{"c":10,"d":[20]}}`, `a[b][d][]=30`, `a[b][e]=40`},
 			expected: `{"a":{"b":{"c":10,"d":[20,30],"e":40}}}
+`,
+		},
+		{
+			name: "merge to json array",
+			args: []string{`a=[{"b":10}]`, `a[][c][]=20`},
+			expected: `{"a":[{"b":10},{"c":[20]}]}
 `,
 		},
 		{
@@ -149,6 +155,35 @@ func TestGojoRun(t *testing.T) {
 			args: []string{`foo=@testdata/file.txt`},
 			expected: `{"foo":"a\nb\nc\nd\ne"}
 `,
+		},
+		{
+			name: "json object of file",
+			args: []string{`foo=:testdata/file1.json`},
+			expected: `{"foo":{"x":1,"z":2,"y":3}}
+`,
+		},
+		{
+			name: "json array of file",
+			args: []string{`foo=:testdata/file2.json`},
+			expected: `{"foo":[{"y":1,"x":2},{"x":3,"y":4},{"y":4,"z":5}]}
+`,
+		},
+		{
+			name: "json number of file",
+			args: []string{`foo=:testdata/file3.json`},
+			expected: `{"foo":42}
+`,
+		},
+		{
+			name: "json string of file",
+			args: []string{`foo=:testdata/file4.json`},
+			expected: `{"foo":"hello, world"}
+`,
+		},
+		{
+			name: "json error",
+			args: []string{`foo=:testdata/file5.json`},
+			err:  `invalid character 'x' after top-level value`,
 		},
 		{
 			name: "base64 of file",
