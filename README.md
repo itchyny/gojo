@@ -55,10 +55,10 @@ This is an implementation of [jo command](https://github.com/jpmens/jo) written 
     "cnt": 2
   }
 }
- $ gojo foo=@Makefile  # read contents from file
-{"foo":"BIN := gojo\nCURRENT_REVISION := $(shell git rev-parse --short HEAD)\nBUILD_LDFLAGS := \"-X ..."}
- $ gojo foo=%Makefile  # base64 of file contents
-{"foo":"QklOIDo9IGdvam8KQ1VSUkVOVF9SRVZJU0lPTiA6PSAkKHNoZWxsIGdpdCByZXYtcGFyc2UgLS1zaG9ydCBIRUFEKQp ..."}
+ $ gojo foo=@testdata/file.txt  # read contents from file
+{"foo":"a\nb\nc\nd\ne"}
+ $ gojo foo=%testdata/file.txt  # base64 of file contents
+{"foo":"YQpiCmMKZAplCg=="}
 ```
 
 ## Installation
