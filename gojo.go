@@ -54,17 +54,17 @@ func (g *Gojo) runObj() error {
 }
 
 func (g *Gojo) runArr() error {
-	as := make([]interface{}, 0, len(g.args))
-	for _, arg := range g.args {
-		value, err := parseValue(arg)
+	xs := make([]interface{}, len(g.args))
+	for i, arg := range g.args {
+		v, err := parseValue(arg)
 		if err != nil {
 			return err
 		}
-		as = append(as, value)
+		xs[i] = v
 	}
 	enc := json.NewEncoder(g.output)
 	if g.pretty {
 		enc.SetIndent("", indent)
 	}
-	return enc.Encode(as)
+	return enc.Encode(xs)
 }
