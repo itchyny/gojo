@@ -1,7 +1,7 @@
 # gojo
 [![CI Status](https://github.com/itchyny/gojo/workflows/CI/badge.svg)](https://github.com/itchyny/gojo/actions)
 [![Go Report Card](https://goreportcard.com/badge/github.com/itchyny/gojo)](https://goreportcard.com/report/github.com/itchyny/gojo)
-[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/itchyny/gojo/blob/master/LICENSE)
+[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/itchyny/gojo/blob/main/LICENSE)
 [![release](https://img.shields.io/github/release/itchyny/gojo/all.svg)](https://github.com/itchyny/gojo/releases)
 [![pkg.go.dev](https://pkg.go.dev/badge/github.com/itchyny/gojo)](https://pkg.go.dev/github.com/itchyny/gojo)
 
