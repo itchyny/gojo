@@ -94,22 +94,22 @@ func TestGojoMap(t *testing.T) {
 		{
 			name: "expected object",
 			args: []string{"foo[]=1", "foo[bar]=2"},
-			err:  "expected an object: foo: [1]",
+			err:  "expected an object: .foo: [1]",
 		},
 		{
 			name: "expected object deep",
 			args: []string{"foo[bar][]=1", "foo[bar][baz]=2"},
-			err:  "expected an object: foo.bar: [1]",
+			err:  "expected an object: .foo.bar: [1]",
 		},
 		{
 			name: "expected array",
 			args: []string{"foo[bar]=1", "foo[]=2"},
-			err:  `expected an array: foo: {"bar":1}`,
+			err:  `expected an array: .foo: {"bar":1}`,
 		},
 		{
 			name: "expected array deep",
 			args: []string{"foo[bar][baz][qux]=1", "foo[bar][baz][]=2"},
-			err:  `expected an array: foo.bar.baz: {"qux":1}`,
+			err:  `expected an array: .foo.bar.baz: {"qux":1}`,
 		},
 		{
 			name: "json error",

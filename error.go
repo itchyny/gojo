@@ -19,7 +19,7 @@ type errArray struct {
 
 func (err errArray) Error() string {
 	bs, _ := json.Marshal(err.value)
-	return fmt.Sprintf("expected an array: %s: %s", strings.Join(err.keys, "."), string(bs))
+	return fmt.Sprintf("expected an array: .%s: %s", strings.Join(err.keys, "."), string(bs))
 }
 
 type errObject struct {
@@ -29,5 +29,5 @@ type errObject struct {
 
 func (err errObject) Error() string {
 	bs, _ := json.Marshal(err.value)
-	return fmt.Sprintf("expected an object: %s: %s", strings.Join(err.keys, "."), string(bs))
+	return fmt.Sprintf("expected an object: .%s: %s", strings.Join(err.keys, "."), string(bs))
 }
