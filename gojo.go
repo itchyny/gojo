@@ -1,70 +1,31 @@
 package gojo
 
-import (
-	"encoding/json"
-	"io"
-	"os"
+import "github.com/iancoleman/orderedmap"
 
-	"github.com/iancoleman/orderedmap"
-)
-
-// Gojo represents the gojo printer
-type Gojo struct {
-	args   []string
-	array  bool
-	pretty bool
-	output io.Writer
-}
-
-// New Gojo
-func New(opts ...Option) *Gojo {
-	g := &Gojo{output: os.Stdout}
-	for _, opt := range opts {
-		opt(g)
-	}
-	return g
-}
-
-// Run gojo
-func (g *Gojo) Run() error {
-	if g.array {
-		return g.runArr()
-	}
-	return g.runObj()
-}
-
-const indent = "  "
-
-func (g *Gojo) runObj() error {
+// Map builds a new ordered map from arguments.
+func Map(args []string) (*orderedmap.OrderedMap, error) {
 	ms := orderedmap.New()
-	for _, arg := range g.args {
+	for _, arg := range args {
 		s, err := parseKeyValue(arg)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		if err := s.set(nil, ms); err != nil {
-			return err
+			return nil, err
 		}
 	}
-	enc := json.NewEncoder(g.output)
-	if g.pretty {
-		enc.SetIndent("", indent)
-	}
-	return enc.Encode(ms)
+	return ms, nil
 }
 
-func (g *Gojo) runArr() error {
-	xs := make([]interface{}, len(g.args))
-	for i, arg := range g.args {
+// Array builds a new slice from arguments.
+func Array(args []string) ([]interface{}, error) {
+	xs := make([]interface{}, len(args))
+	for i, arg := range args {
 		v, err := parseValue(arg)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		xs[i] = v
 	}
-	enc := json.NewEncoder(g.output)
-	if g.pretty {
-		enc.SetIndent("", indent)
-	}
-	return enc.Encode(xs)
+	return xs, nil
 }

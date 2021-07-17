@@ -2,6 +2,7 @@ package cli
 
 import (
 	"bufio"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -69,17 +70,22 @@ Options:
 			return exitCodeErr
 		}
 	}
-	opts := []gojo.Option{
-		gojo.Args(args),
-		gojo.Output(cli.outStream),
-	}
+	var ret interface{}
+	var err error
 	if array {
-		opts = append(opts, gojo.Array())
+		ret, err = gojo.Array(args)
+	} else {
+		ret, err = gojo.Map(args)
 	}
+	if err != nil {
+		fmt.Fprintf(cli.errStream, "%s: %s\n", name, err)
+		return exitCodeErr
+	}
+	enc := json.NewEncoder(cli.outStream)
 	if pretty {
-		opts = append(opts, gojo.Pretty())
+		enc.SetIndent("", "  ")
 	}
-	if err := gojo.New(opts...).Run(); err != nil {
+	if err = enc.Encode(ret); err != nil {
 		fmt.Fprintf(cli.errStream, "%s: %s\n", name, err)
 		return exitCodeErr
 	}
