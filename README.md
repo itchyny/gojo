@@ -71,7 +71,7 @@ brew install itchyny/tap/gojo
 
 ### Build from source
 ```bash
-go get github.com/itchyny/gojo/cmd/gojo
+go install github.com/itchyny/gojo/cmd/gojo@latest
 ```
 
 ## Difference to jo

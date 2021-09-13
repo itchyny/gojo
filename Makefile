@@ -21,7 +21,7 @@ show-version: $(GOBIN)/gobump
 	@gobump show -r $(VERSION_PATH)
 
 $(GOBIN)/gobump:
-	@cd && go get github.com/x-motemen/gobump/cmd/gobump
+	@go install github.com/x-motemen/gobump/cmd/gobump@latest
 
 .PHONY: cross
 cross: $(GOBIN)/goxz CREDITS
@@ -32,14 +32,14 @@ cross: $(GOBIN)/goxz CREDITS
 	build linux,darwin,windows amd64 && build linux,darwin arm64
 
 $(GOBIN)/goxz:
-	cd && go get github.com/Songmu/goxz/cmd/goxz
+	go install github.com/Songmu/goxz/cmd/goxz@latest
 
 CREDITS: $(GOBIN)/gocredits go.sum
 	go mod tidy
 	gocredits -w .
 
 $(GOBIN)/gocredits:
-	cd && go get github.com/Songmu/gocredits/cmd/gocredits
+	go install github.com/Songmu/gocredits/cmd/gocredits@latest
 
 .PHONY: test
 test: build
@@ -51,7 +51,7 @@ lint: $(GOBIN)/staticcheck
 	staticcheck ./...
 
 $(GOBIN)/staticcheck:
-	cd && go get honnef.co/go/tools/cmd/staticcheck
+	go install honnef.co/go/tools/cmd/staticcheck@latest
 
 .PHONY: clean
 clean:
@@ -77,4 +77,4 @@ upload: $(GOBIN)/ghr
 	ghr "v$(VERSION)" goxz
 
 $(GOBIN)/ghr:
-	cd && go get github.com/tcnksm/ghr
+	go install github.com/tcnksm/ghr@latest
