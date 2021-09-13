@@ -25,11 +25,8 @@ $(GOBIN)/gobump:
 
 .PHONY: cross
 cross: $(GOBIN)/goxz CREDITS
-	build() { \
-		goxz -n $(BIN) -pv=v$(VERSION) -os=$$1 -arch=$$2 \
-			-include _$(BIN) -build-ldflags=$(BUILD_LDFLAGS) ./cmd/$(BIN); \
-	}; \
-	build linux,darwin,windows amd64 && build linux,darwin arm64
+	goxz -n $(BIN) -pv=v$(VERSION) -include _$(BIN) -arch=amd64,arm64 \
+		-build-ldflags=$(BUILD_LDFLAGS) ./cmd/$(BIN)
 
 $(GOBIN)/goxz:
 	go install github.com/Songmu/goxz/cmd/goxz@latest
