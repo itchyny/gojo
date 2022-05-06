@@ -14,7 +14,7 @@ func (err errParse) Error() string {
 
 type errArray struct {
 	keys  []string
-	value interface{}
+	value any
 }
 
 func (err errArray) Error() string {
@@ -24,7 +24,7 @@ func (err errArray) Error() string {
 
 type errObject struct {
 	keys  []string
-	value interface{}
+	value any
 }
 
 func (err errObject) Error() string {

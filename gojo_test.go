@@ -195,7 +195,7 @@ func TestGojoArray(t *testing.T) {
 	}
 }
 
-func diff(expected string, got interface{}) string {
+func diff(expected string, got any) string {
 	bs, _ := json.Marshal(got)
 	if string(bs) == expected {
 		return ""

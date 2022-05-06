@@ -3,21 +3,21 @@ package gojo
 import "github.com/iancoleman/orderedmap"
 
 type setter interface {
-	set([]string, interface{}) error
+	set([]string, any) error
 }
 
 type arraySetter struct {
-	value interface{}
+	value any
 }
 
-func (s *arraySetter) set(keys []string, v interface{}) error {
-	arr, ok := v.(*[]interface{})
+func (s *arraySetter) set(keys []string, v any) error {
+	arr, ok := v.(*[]any)
 	if !ok {
 		return errArray{keys, v}
 	}
 	if st, ok := s.value.(setter); ok {
 		if ast, ok := st.(*arraySetter); ok {
-			ar := []interface{}{}
+			ar := []any{}
 			if err := ast.set(keys, &ar); err != nil {
 				return err
 			}
@@ -37,10 +37,10 @@ func (s *arraySetter) set(keys []string, v interface{}) error {
 
 type objectSetter struct {
 	key   string
-	value interface{}
+	value any
 }
 
-func (s *objectSetter) set(keys []string, v interface{}) error {
+func (s *objectSetter) set(keys []string, v any) error {
 	if !isMap(v) {
 		return errObject{keys, v}
 	}
@@ -49,12 +49,12 @@ func (s *objectSetter) set(keys []string, v interface{}) error {
 		switch v := val.(type) {
 		case orderedmap.OrderedMap:
 			val = &v
-		case []interface{}:
+		case []any:
 			val = &v
 		}
 		if !ok {
 			if _, ok := st.(*arraySetter); ok {
-				val = &[]interface{}{}
+				val = &[]any{}
 			} else {
 				val = orderedmap.New()
 			}
@@ -69,22 +69,22 @@ func (s *objectSetter) set(keys []string, v interface{}) error {
 	return nil
 }
 
-func isMap(t interface{}) bool {
+func isMap(t any) bool {
 	switch t.(type) {
 	case *orderedmap.OrderedMap:
 		return true
-	case map[string]interface{}:
+	case map[string]any:
 		return true
 	default:
 		return false
 	}
 }
 
-func getKey(t interface{}, key string) (interface{}, bool) {
+func getKey(t any, key string) (any, bool) {
 	switch t := t.(type) {
 	case *orderedmap.OrderedMap:
 		return t.Get(key)
-	case map[string]interface{}:
+	case map[string]any:
 		v, ok := t[key]
 		return v, ok
 	default:
@@ -92,11 +92,11 @@ func getKey(t interface{}, key string) (interface{}, bool) {
 	}
 }
 
-func setKey(t interface{}, key string, value interface{}) {
+func setKey(t any, key string, value any) {
 	switch t := t.(type) {
 	case *orderedmap.OrderedMap:
 		t.Set(key, value)
-	case map[string]interface{}:
+	case map[string]any:
 		t[key] = value
 	default:
 		panic(t)

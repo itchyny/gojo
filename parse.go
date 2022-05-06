@@ -23,7 +23,7 @@ func parseKeyValue(s string) (setter, error) {
 	return buildSetter(key, value, false), nil
 }
 
-func parseValue(s string) (interface{}, error) {
+func parseValue(s string) (any, error) {
 	if s == "" {
 		return "", nil
 	}
@@ -67,7 +67,7 @@ func parseValue(s string) (interface{}, error) {
 	}
 }
 
-func decodeJSON(bs []byte) (interface{}, error) {
+func decodeJSON(bs []byte) (any, error) {
 	var m orderedmap.OrderedMap
 	if err := json.Unmarshal(bs, &m); err == nil {
 		return m, nil
@@ -77,20 +77,20 @@ func decodeJSON(bs []byte) (interface{}, error) {
 		if vs == nil {
 			return nil, nil
 		}
-		ws := make([]interface{}, len(vs))
+		ws := make([]any, len(vs))
 		for i, v := range vs {
 			ws[i] = v
 		}
 		return ws, nil
 	}
-	var v interface{}
+	var v any
 	if err := json.Unmarshal(bs, &v); err != nil {
 		return nil, err
 	}
 	return v, nil
 }
 
-func buildSetter(key string, value interface{}, inner bool) setter {
+func buildSetter(key string, value any, inner bool) setter {
 	i, j := strings.IndexByte(key, '['), strings.IndexByte(key, ']')
 	if i < 0 || j < 0 || j < i {
 		if inner {

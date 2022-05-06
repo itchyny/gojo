@@ -70,7 +70,7 @@ Options:
 			return exitCodeErr
 		}
 	}
-	var ret interface{}
+	var ret any
 	var err error
 	if array {
 		ret, err = gojo.Array(args)

@@ -18,8 +18,8 @@ func Map(args []string) (*orderedmap.OrderedMap, error) {
 }
 
 // Array builds a new slice from arguments.
-func Array(args []string) ([]interface{}, error) {
-	xs := make([]interface{}, len(args))
+func Array(args []string) ([]any, error) {
+	xs := make([]any, len(args))
 	for i, arg := range args {
 		v, err := parseValue(arg)
 		if err != nil {
