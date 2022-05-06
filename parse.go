@@ -3,7 +3,7 @@ package gojo
 import (
 	"encoding/base64"
 	"encoding/json"
-	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 
@@ -29,7 +29,7 @@ func parseValue(s string) (any, error) {
 	}
 	switch s[0] {
 	case '@':
-		cnt, err := ioutil.ReadFile(s[1:])
+		cnt, err := os.ReadFile(s[1:])
 		if err != nil {
 			return nil, err
 		}
@@ -40,13 +40,13 @@ func parseValue(s string) (any, error) {
 		}
 		return string(cnt), nil
 	case ':':
-		cnt, err := ioutil.ReadFile(s[1:])
+		cnt, err := os.ReadFile(s[1:])
 		if err != nil {
 			return nil, err
 		}
 		return decodeJSON(cnt)
 	case '%':
-		cnt, err := ioutil.ReadFile(s[1:])
+		cnt, err := os.ReadFile(s[1:])
 		if err != nil {
 			return nil, err
 		}
