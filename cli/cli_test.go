@@ -38,14 +38,16 @@ func TestCliRun(t *testing.T) {
 		},
 		{
 			name: "nested object",
-			args: []string{"-p", `foo={"bar":{"foo":1,"baz":"qux","quux":["foo"]}}`},
+			args: []string{"-p", `foo={"bar":{"foo":1,"baz":"qux","quux":["foo",{},[]]}}`},
 			expected: `{
   "foo": {
     "bar": {
       "foo": 1,
       "baz": "qux",
       "quux": [
-        "foo"
+        "foo",
+        {},
+        []
       ]
     }
   }
@@ -70,6 +72,69 @@ func TestCliRun(t *testing.T) {
     }
   }
 ]
+`,
+		},
+		{
+			name: "yaml",
+			args: []string{"-y", "foo=bar"},
+			expected: `foo: bar
+`,
+		},
+		{
+			name: "yaml multiple",
+			args: []string{"-y", "foo=bar", "bar=false", "baz=qux", "\n=", `\n=null`},
+			expected: `foo: bar
+bar: false
+baz: qux
+"\n": ""
+\n: null
+`,
+		},
+		{
+			name: "yaml nested object",
+			args: []string{"-y", `foo={"bar":{"foo":1,"baz":"qux","quux":["foo",{},[],{"bar":{}},{"baz":[]},0]}}`},
+			expected: `foo:
+  bar:
+    foo: 1
+    baz: qux
+    quux:
+      - foo
+      - {}
+      - []
+      - bar: {}
+      - baz: []
+      - 0
+`,
+		},
+		{
+			name: "yaml array",
+			args: []string{"-y", "-a", "foo", "bar", "baz", "false", "0x40"},
+			expected: `- foo
+- bar
+- baz
+- false
+- 64
+`,
+		},
+		{
+			name: "yaml nested array",
+			args: []string{"-y", "-a", `{"foo":{"bar":["a\nb\n",{"a\nb":"\na\nb\n"},{"baz":""}],"a\n":"\n"}}`},
+			expected: `- foo:
+    bar:
+      - |
+        a
+        b
+      - ? |-
+          a
+          b
+        : |
+
+          a
+          b
+      - baz: ""
+    ? |
+      a
+    : "\n"
 `,
 		},
 		{
@@ -124,7 +189,7 @@ bar
 					t.Errorf("code should be %d but got %d", exitCodeOK, code)
 				}
 				if got := outStream.String(); got != tc.expected {
-					t.Errorf("output should be %q but got %q", tc.expected, got)
+					t.Errorf("output should be\n  %q\nbut got\n  %q", tc.expected, got)
 				}
 			} else {
 				if code != exitCodeErr {

@@ -2,6 +2,7 @@ package cli
 
 import (
 	"bufio"
+	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -9,6 +10,7 @@ import (
 	"runtime"
 
 	"github.com/itchyny/gojo"
+	"github.com/itchyny/json2yaml"
 )
 
 const name = "gojo"
@@ -28,7 +30,7 @@ type cli struct {
 	errStream io.Writer
 }
 
-func (cli *cli) run(args []string) int {
+func (cli *cli) run(args []string) (exitCode int) {
 	fs := flag.NewFlagSet(name, flag.ContinueOnError)
 	fs.SetOutput(cli.errStream)
 	fs.Usage = func() {
@@ -50,6 +52,8 @@ Options:
 	fs.BoolVar(&array, "a", false, "creates an array")
 	var pretty bool
 	fs.BoolVar(&pretty, "p", false, "pretty print")
+	var yaml bool
+	fs.BoolVar(&yaml, "y", false, "YAML format output")
 	if err := fs.Parse(args); err != nil {
 		if err == flag.ErrHelp {
 			return exitCodeOK
@@ -81,9 +85,23 @@ Options:
 		fmt.Fprintf(cli.errStream, "%s: %s\n", name, err)
 		return exitCodeErr
 	}
-	enc := json.NewEncoder(cli.outStream)
-	if pretty {
-		enc.SetIndent("", "  ")
+	var enc *json.Encoder
+	if yaml {
+		var bs bytes.Buffer
+		enc = json.NewEncoder(&bs)
+		defer func() {
+			if exitCode == exitCodeOK {
+				if err = json2yaml.Convert(cli.outStream, &bs); err != nil {
+					fmt.Fprintf(cli.errStream, "%s: %s\n", name, err)
+					exitCode = exitCodeErr
+				}
+			}
+		}()
+	} else {
+		enc = json.NewEncoder(cli.outStream)
+		if pretty {
+			enc.SetIndent("", "  ")
+		}
 	}
 	if err = enc.Encode(ret); err != nil {
 		fmt.Fprintf(cli.errStream, "%s: %s\n", name, err)
