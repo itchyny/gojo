@@ -83,6 +83,7 @@ go install github.com/itchyny/gojo/cmd/gojo@latest
 ## Difference to jo
 - Implemented in Go and Go-gettable, also useful for library usage.
 - Implements nested paths (example: `foo[x][y][z]=1`, `foo[][][]=1`).
+- Implements YAML output option `-y` (example: `gojo -y foo=1` outputs `foo: 1`).
 - Drops support of `k@v` syntax (use `k=true` or `k=false`) and type guessing flags.
 - Does not print duplicate keys (although duplicate key in JSON is valid, it's not that useful and overwritten by the latter).
 
