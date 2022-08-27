@@ -55,6 +55,12 @@ This is an implementation of [jo command](https://github.com/jpmens/jo) written 
     "cnt": 2
   }
 }
+ $ gojo -y res[foo][][id]=10 res[foo][][id]=20 res[cnt]=2
+res:
+  foo:
+    - id: 10
+    - id: 20
+  cnt: 2
  $ gojo foo=@testdata/file.txt    # read contents from file
 {"foo":"a\nb\nc\nd\ne"}
  $ gojo foo=:testdata/file1.json  # json value of file
