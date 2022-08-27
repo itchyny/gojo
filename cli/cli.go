@@ -87,11 +87,11 @@ Options:
 	}
 	var enc *json.Encoder
 	if yaml {
-		var bs bytes.Buffer
-		enc = json.NewEncoder(&bs)
+		var buf bytes.Buffer
+		enc = json.NewEncoder(&buf)
 		defer func() {
 			if exitCode == exitCodeOK {
-				if err = json2yaml.Convert(cli.outStream, &bs); err != nil {
+				if err = json2yaml.Convert(cli.outStream, &buf); err != nil {
 					fmt.Fprintf(cli.errStream, "%s: %s\n", name, err)
 					exitCode = exitCodeErr
 				}
