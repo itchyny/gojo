@@ -1,8 +1,8 @@
 BIN := gojo
 VERSION := $$(make -s show-version)
-VERSION_PATH := cli
+VERSION_PATH := cmd/$(BIN)
 CURRENT_REVISION = $(shell git rev-parse --short HEAD)
-BUILD_LDFLAGS = "-s -w -X github.com/itchyny/$(BIN)/cli.revision=$(CURRENT_REVISION)"
+BUILD_LDFLAGS = "-s -w -X main.revision=$(CURRENT_REVISION)"
 GOBIN ?= $(shell go env GOPATH)/bin
 
 .PHONY: all
@@ -14,7 +14,7 @@ build:
 
 .PHONY: install
 install:
-	go install -ldflags=$(BUILD_LDFLAGS) ./...
+	go install -ldflags=$(BUILD_LDFLAGS) ./cmd/$(BIN)
 
 .PHONY: show-version
 show-version: $(GOBIN)/gobump
