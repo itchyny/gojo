@@ -2,10 +2,36 @@
 
 _gojo()
 {
-  _arguments -C \
-    '(-v)-v[print version]' \
-    '(-a)-a[creates an array]' \
-    '(-p)-p[pretty print]' \
-    '(-h)-h[print help]' \
-    && ret=0
+  _arguments -n -S -A '-*' \
+    '-a[creates an array]' \
+    '(-y)-p[pretty print]' \
+    '(-p)-y[YAML format output]' \
+    '(- *)-v[print version]' \
+    '(- *)-h[print help]' \
+    '*: :_gojo_args'
+}
+
+_gojo_args()
+{
+  local -A messages=(
+    '@' 'read file contents'
+    ':' 'read json file'
+    '%' 'base64 of file contents'
+  )
+  if compset -P 1 '(#b)(*)='; then
+    local name=$match[1]
+    if compset -P '(#b)([@:%])'; then
+      _arguments "*:${messages[$match[1]]}:_files"
+    else
+      _guard '^-*' "value of '$name'"
+    fi
+  elif (($words[(I)-a])); then
+    if compset -P '(#b)([@:%])'; then
+      _arguments "*:${messages[$match[1]]}:_files"
+    else
+      _guard '^-*' 'element of array'
+    fi
+  else
+    _guard '^-*' 'key=value'
+  fi
 }
