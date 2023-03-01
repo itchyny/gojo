@@ -17,7 +17,7 @@ import (
 
 const name = "gojo"
 
-const version = "0.3.1"
+const version = "0.3.2"
 
 var revision = "HEAD"
 
