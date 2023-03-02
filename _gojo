@@ -2,7 +2,7 @@
 
 _gojo()
 {
-  _arguments -n -S -A '-*' \
+  _arguments -S -A '-*' \
     '-a[creates an array]' \
     '(-y)-p[pretty print]' \
     '(-p)-y[YAML format output]' \
