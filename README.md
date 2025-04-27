@@ -1,5 +1,5 @@
 # gojo
-[![CI Status](https://github.com/itchyny/gojo/workflows/CI/badge.svg)](https://github.com/itchyny/gojo/actions)
+[![CI Status](https://github.com/itchyny/gojo/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/itchyny/gojo/actions?query=branch:main)
 [![Go Report Card](https://goreportcard.com/badge/github.com/itchyny/gojo)](https://goreportcard.com/report/github.com/itchyny/gojo)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/itchyny/gojo/blob/main/LICENSE)
 [![release](https://img.shields.io/github/release/itchyny/gojo/all.svg)](https://github.com/itchyny/gojo/releases)
@@ -91,7 +91,7 @@ go install github.com/itchyny/gojo/cmd/gojo@latest
 Report bug at [Issues・itchyny/gojo - GitHub](https://github.com/itchyny/gojo/issues).
 
 ## Author
-itchyny (https://github.com/itchyny)
+itchyny (<https://github.com/itchyny>)
 
 ## License
 This software is released under the MIT License, see LICENSE.
